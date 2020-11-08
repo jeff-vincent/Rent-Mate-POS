@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import RentalItem
+from .models import RentalItem, Reservation
 
 
 class RentalItemSerializer(serializers.HyperlinkedModelSerializer):
@@ -9,6 +9,18 @@ class RentalItemSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'url',
             'sku',
-            'text',
+            'description',
             'date',
+        )
+
+
+class ReservationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = (
+            'id',
+            'url',
+            'rental_item',
+            'reservation_start',
+            'reservation_end'
         )
