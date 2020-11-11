@@ -21,3 +21,8 @@
 1. delete all files within the targeted migrations directory except for `__init__.py`
 1. consider deleting the db. 
 1. try migrations again
+
+### Frontend Development
+
+1. cd frontend
+2. yarn start
