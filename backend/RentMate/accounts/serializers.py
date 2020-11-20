@@ -42,6 +42,7 @@ class CompanySerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'name',
             'address',
+            'email',
         )
 
 
@@ -61,6 +62,7 @@ class AccountSerializer(serializers.Serializer):
             company_address=company_data.get('address'),
             username=user_data.get('username'),
             password=user_data.get('password'),
+            email=user_data.get('email')
         )
 
         return {'company': company, 'user': user}
