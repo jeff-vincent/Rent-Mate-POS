@@ -38,6 +38,8 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'first_name',
             'last_name',
+            'email',
+            'payment_method',
             'stripe_customer_token'
         )
 
