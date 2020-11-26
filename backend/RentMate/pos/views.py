@@ -1,5 +1,6 @@
 from rest_framework import permissions
 from rest_framework import generics
+import stripe
 
 from . import serializers
 from .models import RentalItem, Reservation, Customer, Rental
@@ -74,8 +75,10 @@ class CustomerList(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
 
     def perform_create(self, serializer):
+        stripe_customer = stripe.Customer.create()
+        stripe_customer_token = stripe_customer.id
         company_id = self.request.user.company_id
-        serializer.save(company_id=company_id)
+        serializer.save(company_id=company_id, stripe_customer_token=stripe_customer_token)
 
     def get_queryset(self):
         company_id = self.request.user.company_id

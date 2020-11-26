@@ -33,6 +33,7 @@ class CompanyManager(models.Manager):
             username=username,
             password=password,
             company=company,
+            email=email,
         )
 
         return company, user
@@ -57,7 +58,8 @@ class Company(models.Model):
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey(Company, related_name='%(class)s', on_delete=models.CASCADE, editable=False)
-
+    email = models.EmailField(max_length=254)
+    
     class Meta:
         db_table = 'users'
 

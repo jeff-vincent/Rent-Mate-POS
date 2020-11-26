@@ -27,7 +27,7 @@ class Customer(CompanyRelatedModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField('first-name', blank=False, null=False, max_length=100)
     last_name = models.CharField('last-name', blank=False, null=False, max_length=100)
-    payment_hash = models.CharField('payment-hash', blank=False, null=False, max_length=250)
+    stripe_customer_token = models.CharField('stripe-customer-token', blank=False, max_length=250)
 
     class Meta:
         db_table = 'customers'
