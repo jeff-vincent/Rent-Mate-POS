@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'accounts',
-    'pos'
+    'pos',
+    'payments'
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
