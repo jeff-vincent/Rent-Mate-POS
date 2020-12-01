@@ -8,7 +8,7 @@ from pos.models import Rental
 
 class Payment(CompanyRelatedModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.CharField('user-id', blank=False, null=False, max_length=100)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     rental = models.ForeignKey(Rental, on_delete=models.CASCADE)
     date = models.DateTimeField('date', auto_now_add=True)
