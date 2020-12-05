@@ -4,6 +4,8 @@ import stripe
 
 from . import serializers
 from .models import Payment
+from accounts.models import Company
+from pos.models import Customer
 from RentMate.settings import STRIPE_API_KEY
 
 stripe.api_key = STRIPE_API_KEY
@@ -18,16 +20,27 @@ class PaymentList(generics.ListCreateAPIView):
     queryset = Payment.objects.all()
 
     def perform_create(self, serializer):
-        stripe_customer_token = self.request.data.get('stripe_customer_token')
-        stripe_account_token = self.request.data.get('stripe_account_token')
+        customer_url = self.request.data.get('customer')
+        customer_list = customer_url.split('/')
+        customer_id = customer_list[-1]
+        queryset = Customer.objects.filter(id=customer_id)
+        data_list = list(queryset.values())
+        data = data_list[0]
+        stripe_customer_token = data['stripe_customer_token']
+        payment_method = data['payment_method']
+        company_id = self.request.user.company_id
+        queryset = Company.objects.filter(id=company_id)
+        data_list = list(queryset.values())
+        data = data_list[0]
+        stripe_account_token = data['stripe_account_token']
         amount = self.request.data.get('amount')
         stripe_payment = stripe.PaymentIntent.create(
             customer=stripe_customer_token, 
             stripe_account=stripe_account_token,
+            payment_method=payment_method,
             amount=amount, 
             currency='usd'
             )
-        company_id = self.request.user.company_id
         serializer.save(company_id=company_id, stripe_payment_intent=stripe_payment.id)
 
     def get_queryset(self):

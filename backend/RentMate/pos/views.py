@@ -4,6 +4,7 @@ import stripe
 
 from . import serializers
 from .models import RentalItem, Reservation, Customer, Rental
+from accounts.models import Company
 from RentMate.settings import STRIPE_API_KEY
 
 stripe.api_key = STRIPE_API_KEY
@@ -80,9 +81,17 @@ class CustomerList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         email = self.request.data.get('email')
         payment_method = self.request.data.get('payment_method')
-        stripe_customer = stripe.Customer.create(email=email, payment_method=payment_method)
-        stripe_customer_token = stripe_customer.id
         company_id = self.request.user.company_id
+        queryset = Company.objects.filter(id=company_id)
+        data_list = list(queryset.values())
+        data = data_list[0]
+        stripe_account_token = data['stripe_account_token']
+        stripe_customer = stripe.Customer.create(
+            email=email, 
+            payment_method=payment_method,
+            stripe_account=stripe_account_token
+        )
+        stripe_customer_token = stripe_customer.id
         serializer.save(company_id=company_id, stripe_customer_token=stripe_customer_token)
 
     def get_queryset(self):
