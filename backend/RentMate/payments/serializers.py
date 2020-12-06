@@ -11,5 +11,6 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
             'amount',
             'rental',
             'date',
-            'stripe_payment_intent'
+            'stripe_payment_intent',
+            'stripe_payment_confirmation'
         )

@@ -14,6 +14,8 @@ class Payment(CompanyRelatedModel):
     date = models.DateTimeField('date', auto_now_add=True)
     amount = models.IntegerField('amount', blank=False)
     stripe_payment_intent = models.CharField('stripe-payment-intent', max_length=250)
+    stripe_payment_confirmation = models.CharField('stripe-payment-confirmation', max_length=250)
+
 
 
     class Meta:

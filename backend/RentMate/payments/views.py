@@ -20,28 +20,42 @@ class PaymentList(generics.ListCreateAPIView):
     queryset = Payment.objects.all()
 
     def perform_create(self, serializer):
+        amount = self.request.data.get('amount')
         customer_url = self.request.data.get('customer')
         customer_list = customer_url.split('/')
         customer_id = customer_list[-1]
+
         queryset = Customer.objects.filter(id=customer_id)
         data_list = list(queryset.values())
         data = data_list[0]
         stripe_customer_token = data['stripe_customer_token']
         payment_method = data['payment_method']
+
         company_id = self.request.user.company_id
         queryset = Company.objects.filter(id=company_id)
         data_list = list(queryset.values())
         data = data_list[0]
         stripe_account_token = data['stripe_account_token']
-        amount = self.request.data.get('amount')
-        stripe_payment = stripe.PaymentIntent.create(
+        
+
+        stripe_payment_intent = stripe.PaymentIntent.create(
             customer=stripe_customer_token, 
             stripe_account=stripe_account_token,
             payment_method=payment_method,
             amount=amount, 
             currency='usd'
-            )
-        serializer.save(company_id=company_id, stripe_payment_intent=stripe_payment.id)
+        )
+
+        stripe_payment_confirmation = stripe.PaymentIntent.confirm(
+            stripe_payment_intent.id,
+            payment_method=payment_method,
+            stripe_account=stripe_account_token,
+        )
+        serializer.save(
+            company_id=company_id, 
+            stripe_payment_intent=stripe_payment_intent.id,
+            stripe_payment_confirmation=stripe_payment_confirmation.id
+        )
 
     def get_queryset(self):
         company_id = self.request.user.company_id
