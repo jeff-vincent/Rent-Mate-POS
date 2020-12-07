@@ -15,17 +15,25 @@ class CompanyManager(models.Manager):
     def create_account(self, company_name, username, password, email, company_address=None):
         """Creates a Company along with the User and returns them both"""
 
-        stripe_response = stripe.Account.create(
+        stripe_account = stripe.Account.create(
             type="standard",
             country="US",
             email=email,
+        )
+
+        stripe_onboarding_link = stripe.AccountLink.create(
+            account=stripe_account.id,
+            refresh_url="http://127.0.0.1:8000/reauth",
+            return_url="http://127.0.0.1:8000/return",
+            type="account_onboarding",
         )
 
         company = Company(
             name=company_name,
             address=company_address,
             email=email,
-            stripe_account_token = stripe_response.id
+            stripe_account_token=stripe_account.id,
+            stripe_onboarding_link=stripe_onboarding_link.url
         )
         company.save()
 
@@ -45,6 +53,7 @@ class Company(models.Model):
     address = models.CharField('address', max_length=250, blank=True)
     email = models.EmailField(max_length=254)
     stripe_account_token = models.CharField('stripe_account_token', max_length=300)
+    stripe_onboarding_link = models.CharField('stripe_onboarding_link', max_length=300)
 
     objects = CompanyManager()
 

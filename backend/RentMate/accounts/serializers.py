@@ -43,6 +43,7 @@ class CompanySerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'address',
             'email',
+            'stripe_onboarding_link'
         )
 
 

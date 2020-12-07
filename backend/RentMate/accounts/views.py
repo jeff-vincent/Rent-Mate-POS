@@ -1,6 +1,12 @@
+import stripe
 from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import Company
 from . import serializers
+from RentMate.settings import STRIPE_API_KEY
+
+stripe.api_key = STRIPE_API_KEY
 
 
 User = get_user_model()
@@ -54,3 +60,19 @@ class CompanyDetail(generics.RetrieveUpdateAPIView):
     def get_object(self):
         # Ensure that users can only see the company that they belong to
         return self.request.user.company
+
+    def put(self, request, *args, **kwargs):
+        company = self.get_object()
+        stripe_onboarding_link = stripe.AccountLink.create(
+            account=company.stripe_account_token,
+            refresh_url="http://127.0.0.1:8000/reauth",
+            return_url="http://127.0.0.1:8000/return",
+            type="account_onboarding",
+        )
+        company.stripe_onboarding_link = stripe_onboarding_link.url
+        company.save()
+
+        serializer = self.get_serializer(company)
+
+        return Response(serializer.data)
+
