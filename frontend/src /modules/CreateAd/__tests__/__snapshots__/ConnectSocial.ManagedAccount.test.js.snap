@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Title should render the Title Component correctly 1`] = `
+<div>
+  <div>
+    <WithStyles(ForwardRef(FormControlLabel))
+      control={
+        <ForwardRef(WithStyles)
+          checked={false}
+          color="primary"
+          name="Managed Account"
+          onChange={[Function]}
+        />
+      }
+      label="Make Managed Account"
+    />
+  </div>
+  <WithStyles(ForwardRef(Button))
+    color="primary"
+    onClick={[Function]}
+    variant="outlined"
+  >
+    What is a Managed Account?
+  </WithStyles(ForwardRef(Button))>
+  <WithStyles(ForwardRef(Dialog))
+    TransitionComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "render": [Function],
+      }
+    }
+    aria-describedby="alert-dialog-slide-description"
+    aria-labelledby="alert-dialog-slide-title"
+    keepMounted={true}
+    onClose={[Function]}
+    open={false}
+  >
+    <WithStyles(ForwardRef(DialogTitle))
+      id="alert-dialog-slide-title"
+    >
+      What is a Managed Account?
+    </WithStyles(ForwardRef(DialogTitle))>
+    <WithStyles(ForwardRef(DialogContent))>
+      <WithStyles(ForwardRef(DialogContentText))
+        id="alert-dialog-slide-description"
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde rerum, consequuntur adipisci, laboriosam sit ullam saepe illum fugiat ea explicabo nostrum impedit earum vel eum veniam fugit omnis hic voluptate.
+      </WithStyles(ForwardRef(DialogContentText))>
+    </WithStyles(ForwardRef(DialogContent))>
+    <WithStyles(ForwardRef(DialogActions))>
+      <WithStyles(ForwardRef(Button))
+        color="primary"
+        onClick={[Function]}
+      >
+        Ok
+      </WithStyles(ForwardRef(Button))>
+    </WithStyles(ForwardRef(DialogActions))>
+  </WithStyles(ForwardRef(Dialog))>
+</div>
+`;

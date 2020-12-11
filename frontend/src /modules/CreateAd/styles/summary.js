@@ -1,0 +1,9 @@
+
+
+const mainLayout = {
+
+}
+
+export {
+    mainLayout,
+}
