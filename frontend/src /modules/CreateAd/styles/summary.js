@@ -1,9 +1,0 @@
-
-
-const mainLayout = {
-
-}
-
-export {
-    mainLayout,
-}
