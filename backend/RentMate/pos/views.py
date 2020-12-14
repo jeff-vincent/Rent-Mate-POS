@@ -1,5 +1,11 @@
+import json
+
 from rest_framework import permissions
 from rest_framework import generics
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
+
+from geopy.distance import geodesic
 import stripe
 
 from . import serializers
@@ -8,6 +14,37 @@ from accounts.models import Company
 from RentMate.settings import STRIPE_API_KEY
 
 stripe.api_key = STRIPE_API_KEY
+
+
+class SearchRentalItems(generics.ListAPIView):
+    name = 'search-rental-items'
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    renderer_classes = [JSONRenderer]
+    serializer_class = serializers.RentalItemSerializer
+    # queryset = RentalItem.objects.get(title_icontains='test', description_icontains='test')
+
+    def get(self, request):
+
+        # TEST VALUE
+        search_terms = 'kayak'
+
+        user_lat = request.user.lat
+        user_long = request.user._long
+        max_distance = request.user.max_distance
+        # search_terms = self.request.query_params.get('search_terms')
+
+        querylist = RentalItem.objects.filter(
+            company_id=request.user.company_id,
+            name__icontains=search_terms,
+            description__icontains=search_terms
+            ).values()
+
+        within_max_distance = [i for i in querylist if geodesic(
+            (i['lat'], i['_long']), (user_lat, user_long)).miles < max_distance]
+
+        return Response(within_max_distance)
 
 
 class RentalItemList(generics.ListCreateAPIView):

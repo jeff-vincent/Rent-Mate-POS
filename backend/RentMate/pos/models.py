@@ -13,6 +13,8 @@ class RentalItem(CompanyRelatedModel):
     sku = models.IntegerField('sku', blank=False, null=False)
     description = models.TextField('description', blank=False, null=False)
     date = models.DateTimeField('date', auto_now_add=True)
+    lat = models.FloatField()
+    _long = models.FloatField()
 
 
     class Meta:

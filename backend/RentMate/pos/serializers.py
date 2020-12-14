@@ -14,6 +14,8 @@ class RentalItemSerializer(serializers.HyperlinkedModelSerializer):
             'color',
             'description',
             'date',
+            'lat',
+            '_long'
         )
 
 

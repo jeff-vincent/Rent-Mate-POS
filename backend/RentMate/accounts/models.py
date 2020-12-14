@@ -12,7 +12,7 @@ class CompanyManager(models.Manager):
     """Manager for the Company model. Also handles the account creation"""
 
     @transaction.atomic
-    def create_account(self, company_name, username, password, email, company_address=None):
+    def create_account(self, company_name, username, password, email, lat, _long, max_distance, company_address=None):
         """Creates a Company along with the User and returns them both"""
 
         stripe_account = stripe.Account.create(
@@ -42,6 +42,9 @@ class CompanyManager(models.Manager):
             password=password,
             company=company,
             email=email,
+            lat=lat,
+            _long=_long,
+            max_distance=max_distance
         )
 
         return company, user
@@ -68,6 +71,9 @@ class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey(Company, related_name='%(class)s', on_delete=models.CASCADE, editable=False)
     email = models.EmailField(max_length=254)
+    max_distance = models.FloatField()
+    lat = models.FloatField()
+    _long = models.FloatField()
     
     class Meta:
         db_table = 'users'

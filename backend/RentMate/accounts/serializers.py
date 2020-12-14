@@ -15,6 +15,9 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'username',
             'password',
+            'lat',
+            '_long',
+            'max_distance'
         )
         # Make sure that the password field is never sent back to the client.
         extra_kwargs = {
@@ -64,7 +67,9 @@ class AccountSerializer(serializers.Serializer):
             email=company_data.get('email'),
             username=user_data.get('username'),
             password=user_data.get('password'),
-            
+            lat=user_data.get('lat'),
+            _long=user_data.get('_long'),
+            max_distance=user_data.get('max_distance')
         )
 
         return {'company': company, 'user': user}

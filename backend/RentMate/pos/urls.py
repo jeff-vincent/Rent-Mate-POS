@@ -11,4 +11,5 @@ urlpatterns = [
     path('customers/<uuid:pk>', views.CustomerDetail.as_view(), name=views.CustomerDetail.name),
     path('rentals/', views.RentalList.as_view(), name=views.RentalList.name),
     path('rentals/<uuid:pk>', views.RentalDetail.as_view(), name=views.RentalDetail.name),
+    path('search/', views.SearchRentalItems.as_view(), name=views.SearchRentalItems.name)
 ]
