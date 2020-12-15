@@ -22,18 +22,12 @@ class SearchRentalItems(generics.ListAPIView):
         permissions.IsAuthenticated,
     )
     renderer_classes = [JSONRenderer]
-    serializer_class = serializers.RentalItemSerializer
-    # queryset = RentalItem.objects.get(title_icontains='test', description_icontains='test')
 
-    def get(self, request):
-
-        # TEST VALUE
-        search_terms = 'kayak'
-
+    def get(self, request, **kwargs):
         user_lat = request.user.lat
         user_long = request.user._long
         max_distance = request.user.max_distance
-        # search_terms = self.request.query_params.get('search_terms')
+        search_terms = kwargs['search_terms']
 
         querylist = RentalItem.objects.filter(
             company_id=request.user.company_id,

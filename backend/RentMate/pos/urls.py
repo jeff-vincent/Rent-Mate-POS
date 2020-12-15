@@ -1,4 +1,5 @@
 from django.urls import path
+from django.urls import re_path
 from . import views
 
 
@@ -11,5 +12,5 @@ urlpatterns = [
     path('customers/<uuid:pk>', views.CustomerDetail.as_view(), name=views.CustomerDetail.name),
     path('rentals/', views.RentalList.as_view(), name=views.RentalList.name),
     path('rentals/<uuid:pk>', views.RentalDetail.as_view(), name=views.RentalDetail.name),
-    path('search/', views.SearchRentalItems.as_view(), name=views.SearchRentalItems.name)
+    re_path(r'^search/(?P<search_terms>\D+)/', views.SearchRentalItems.as_view(), name=views.SearchRentalItems.name)
 ]
