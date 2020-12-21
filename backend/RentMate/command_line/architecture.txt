@@ -1,0 +1,25 @@
+
+
+The workflow should go like this:
+
+    inputs = path to CSV
+    
+    Check CSV for DB constraints
+    1) Read from Sample CSV, CSV needs to follow database normalization rules.
+    1NF, 2NF, 3NF before we start creating sorting by column and rows.
+    We need to check to make sure that the CSV follows these rules before we dump 
+    them into the database (in our case AWS).
+
+    Check for CSV constraints
+    2) We need to check constraints on how the CSV should be setup, there
+    should be a particular set of rules that a CSV should follow for us to process
+
+    Map information to models
+    3) We should sort these values out by Product, but also what type of rentals are they doing?
+    
+    Create serveral classes for custom error handling and to let the user know progress
+    of load      
+
+
+
+     
